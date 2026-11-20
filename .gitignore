@@ -1,0 +1,30 @@
+# dependencies and build output
+node_modules/
+.next/
+dist/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets (the .env.example templates are published, the real files never)
+.env
+.env.*
+!.env.example
+
+# logs and OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# local notes, tests and AI-tool files stay off GitHub
+_local/
+.claude/
+CLAUDE.md
+AGENTS.md
+backend/tests/
+backend/vitest.config.ts
+*.test.ts
+*.test.tsx

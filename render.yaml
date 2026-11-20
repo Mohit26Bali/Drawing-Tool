@@ -1,0 +1,29 @@
+# Render blueprint for the API and its database. The website is deployed separately (for example on Vercel).
+# This file has not been run end to end: check the first deploy's logs.
+databases:
+  - name: canvasflow-db
+    plan: free # free databases expire on Render; choose a paid plan for real use
+
+services:
+  - type: web
+    name: canvasflow-api
+    runtime: node
+    rootDir: backend
+    plan: free # free services sleep when idle; WebSocket clients reconnect on their own
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npx prisma migrate deploy && node dist/index.js
+    healthCheckPath: /health/ready
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: canvasflow-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "1"
+      # Set this in the Render dashboard to the website's address, for example https://canvasflow.vercel.app
+      - key: CLIENT_URL
+        sync: false
